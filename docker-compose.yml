@@ -1,0 +1,10 @@
+version: "3.9"
+services:
+  postgres:
+    image: postgres:14
+    environment:
+      POSTGRES_DB: "library_db"
+      POSTGRES_USER: "library"
+      POSTGRES_PASSWORD: "library"
+    ports:
+      - "5432:5432"
