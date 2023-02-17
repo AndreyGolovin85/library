@@ -18,7 +18,7 @@ class Author(models.Model):
 
 class Book(models.Model):
     title = models.CharField(max_length=40, verbose_name="Название")
-    description = models.CharField(max_length=200, verbose_name="Описание")
+    description = models.TextField(verbose_name="Описание")
     pages = models.PositiveSmallIntegerField(verbose_name="Количество страниц")
     author = models.ForeignKey(Author, on_delete=models.PROTECT, verbose_name="Автор")
     quantity_book = models.PositiveSmallIntegerField(verbose_name="Количество книг")
@@ -38,7 +38,7 @@ class Readers(models.Model):
     last_name = models.CharField(max_length=20, verbose_name="Фамилия")
     phone_number = models.PositiveBigIntegerField(verbose_name="Телефон")
     status = models.BooleanField(default=True, verbose_name="Статус")
-    active_books = models.ManyToManyField(Book, symmetrical=False, verbose_name="Активные книги", blank=True)
+    active_books = models.ManyToManyField(Book, verbose_name="Активные книги", blank=True)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
     update_at = models.DateTimeField(auto_now=True, verbose_name="Дата обновления")
 
