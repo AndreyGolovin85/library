@@ -13,7 +13,11 @@ class Author(models.Model):
         verbose_name_plural = "Авторы"
 
     def __str__(self):
-        return f"Автор: {self.first_name} {self.last_name}"
+        return f"{self.first_name} {self.last_name}"
+
+    @property
+    def full_name_author(self):
+        return f"{self.first_name} {self.last_name}"
 
 
 class Book(models.Model):
@@ -30,7 +34,7 @@ class Book(models.Model):
         verbose_name_plural = "Книги"
 
     def __str__(self):
-        return f"Книга: {self.title} {self.description}"
+        return f"Книга: {self.title}"
 
 
 class Readers(models.Model):
@@ -46,5 +50,14 @@ class Readers(models.Model):
         verbose_name = "Читатель"
         verbose_name_plural = "Читатели"
 
+    def full_name_readers(self):
+        return f"{self.first_name} {self.last_name}"
+
     def __str__(self):
         return f"Читатель: {self.first_name} {self.last_name}"
+
+    def display_books(self):
+        return ', '.join([book.title for book in self.active_books.all()])
+
+    display_books.short_description = 'Книги'
+    full_name_readers.short_description = 'Читатели'
