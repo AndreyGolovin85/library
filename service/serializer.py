@@ -23,11 +23,11 @@ class CountBookValidator:
             raise serializers.ValidationError("Невозможно добавить книгу")
 
 
-class ReadersCountActiveBook:
-    def __call__(self, value):
-        if len(value["active_books"]) > 3:
-            raise serializers.ValidationError("Невозможно добавить более 3 книг")
-        return value
+# class ReadersCountActiveBook:
+#     def __call__(self, value):
+#         if len(value["active_books"]) > 3:
+#             raise serializers.ValidationError("Невозможно добавить более 3 книг")
+#         return value
 
 
 class AuthorSerializers(serializers.ModelSerializer):
