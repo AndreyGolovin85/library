@@ -22,13 +22,10 @@ class ReadersAdmin(admin.ModelAdmin):
     def delete_book(self, request, queryset: QuerySet):
         qs = queryset.values_list('id', 'active_books')
         count_book = len(qs)
-        # Здесь не получается получить объект книги по id
-        # book = Book(qs[0][1])
         readers = Readers(qs[0][0])
         readers.active_books.clear()
-        queryset.update(status=False)
 
-        self.message_user(request, f"Удалено {count_book} книг, статус обновлен")
+        self.message_user(request, f"Удалено {count_book} книг")
 
 
 class BookAdmin(admin.ModelAdmin):

@@ -17,19 +17,6 @@ class BookPagesValidator:
             raise serializers.ValidationError("Количество страниц должно быть положительное число")
 
 
-class CountBookValidator:
-    def __call__(self, value):
-        if value <= 0:
-            raise serializers.ValidationError("Невозможно добавить книгу")
-
-
-# class ReadersCountActiveBook:
-#     def __call__(self, value):
-#         if len(value["active_books"]) > 3:
-#             raise serializers.ValidationError("Невозможно добавить более 3 книг")
-#         return value
-
-
 class AuthorSerializers(serializers.ModelSerializer):
     class Meta:
         model = Author
@@ -39,7 +26,6 @@ class AuthorSerializers(serializers.ModelSerializer):
 class BookSerializers(serializers.ModelSerializer):
     author = serializers.SlugRelatedField(queryset=Author.objects.all(), slug_field="last_name")
     pages = serializers.IntegerField(validators=[BookPagesValidator()])
-    quantity_book = serializers.IntegerField(validators=[CountBookValidator()])
 
     class Meta:
         model = Book
@@ -49,6 +35,22 @@ class BookSerializers(serializers.ModelSerializer):
 class ReadersSerializers(serializers.ModelSerializer):
     active_books = serializers.SlugRelatedField(queryset=Book.objects.all(), slug_field="title", many=True)
     phone_number = serializers.IntegerField(validators=[PhoneValidator()])
+
+    def validate(self, data):
+        books = data.get('active_books')
+        for book in books:
+            if book.quantity_book == 0:
+                raise serializers.ValidationError(f"Книга '{book.title}' недоступна для добавления")
+        return data
+
+    def create(self, validated_data):
+        books = validated_data.pop('active_books', [])
+        reader = super().create(validated_data)
+        for book in books:
+            book.quantity_book -= 1
+            book.save()
+            reader.active_books.add(book)
+        return reader
 
     class Meta:
         model = Readers
