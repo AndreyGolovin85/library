@@ -1,3 +1,4 @@
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 
@@ -37,13 +38,10 @@ class Book(models.Model):
         return f"Книга: {self.title}"
 
 
-class Readers(models.Model):
-    first_name = models.CharField(max_length=20, verbose_name="Имя")
-    last_name = models.CharField(max_length=20, verbose_name="Фамилия")
-    phone_number = models.PositiveBigIntegerField(verbose_name="Телефон")
+class Readers(AbstractUser):
     status = models.BooleanField(default=True, verbose_name="Статус")
     active_books = models.ManyToManyField(Book, verbose_name="Активные книги", blank=True)
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
+    phone = models.PositiveBigIntegerField(verbose_name="Телефон", null=True)
     update_at = models.DateTimeField(auto_now=True, verbose_name="Дата обновления")
 
     class Meta:
@@ -57,7 +55,7 @@ class Readers(models.Model):
         return f"Читатель: {self.first_name} {self.last_name}"
 
     def display_books(self):
-        return ', '.join([book.title for book in self.active_books.all()])
+        return ", ".join([book.title for book in self.active_books.all()])
 
-    display_books.short_description = 'Книги'
-    full_name_readers.short_description = 'Читатели'
+    display_books.short_description = "Книги"
+    full_name_readers.short_description = "Читатели"

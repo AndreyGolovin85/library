@@ -7,3 +7,5 @@
 Для создания образа базы postgres:
 docker exec -i library-postgres-1 --username library --password library library_db > C:\Users\Admin\Desktop\library/library.sql
 
+пользователь admin - пароль 12345
+обычный пользователь andrey - пароль 123 

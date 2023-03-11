@@ -2,14 +2,14 @@ from django.contrib import admin
 from django.urls import reverse
 from django.utils.html import format_html
 from django.db.models import QuerySet
-from rest_framework import serializers
+
 
 from service.models import Readers, Book, Author
 
 
 class ReadersAdmin(admin.ModelAdmin):
-    list_display = ("id", "full_name_readers", "display_books", "phone_number", "status", "created_at")
-    list_filter = ("status", "created_at")
+    list_display = ("id", "full_name_readers", "display_books", "phone", "status", "date_joined")
+    list_filter = ("status", "date_joined")
     search_fields = ["first_name", "last_name"]
     actions = ["close_status", "delete_book"]
 

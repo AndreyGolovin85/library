@@ -34,17 +34,17 @@ class BookSerializers(serializers.ModelSerializer):
 
 class ReadersSerializers(serializers.ModelSerializer):
     active_books = serializers.SlugRelatedField(queryset=Book.objects.all(), slug_field="title", many=True)
-    phone_number = serializers.IntegerField(validators=[PhoneValidator()])
+    phone = serializers.IntegerField(validators=[PhoneValidator()])
 
     def validate(self, data):
-        books = data.get('active_books')
+        books = data.get("active_books")
         for book in books:
             if book.quantity_book == 0:
                 raise serializers.ValidationError(f"Книга '{book.title}' недоступна для добавления")
         return data
 
     def create(self, validated_data):
-        books = validated_data.pop('active_books', [])
+        books = validated_data.pop("active_books", [])
         reader = super().create(validated_data)
         for book in books:
             book.quantity_book -= 1
