@@ -18,6 +18,7 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework import routers
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 from service import views
 
@@ -28,6 +29,8 @@ router.register(r'readers', views.ReadersViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('login/', TokenObtainPairView.as_view(), name="create_token"),
+    path('refresh/', TokenRefreshView.as_view(), name="refresh_token"),
 ] + router.urls
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
