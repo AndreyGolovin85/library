@@ -40,7 +40,7 @@ class Book(models.Model):
 
 class Readers(AbstractUser):
     status = models.BooleanField(default=True, verbose_name="Статус")
-    active_books = models.ManyToManyField(Book, verbose_name="Активные книги", blank=True)
+    active_books = models.ManyToManyField(Book, verbose_name="Активные книги", blank=True, null=True)
     phone = models.PositiveBigIntegerField(verbose_name="Телефон", null=True)
     update_at = models.DateTimeField(auto_now=True, verbose_name="Дата обновления")
 

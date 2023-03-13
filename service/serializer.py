@@ -50,6 +50,10 @@ class ReadersSerializers(serializers.ModelSerializer):
             book.quantity_book -= 1
             book.save()
             reader.active_books.add(book)
+
+        reader.set_password(reader.password)
+        reader.save()
+
         return reader
 
     class Meta:

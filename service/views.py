@@ -1,12 +1,12 @@
 from rest_framework.viewsets import ModelViewSet
-from rest_framework.permissions import AllowAny, IsAdminUser
+from rest_framework.permissions import AllowAny, IsAdminUser, BasePermission
 
 from service.models import Author, Book, Readers
 from service.serializer import AuthorSerializers, BookSerializers, ReadersSerializers
 from service.permissions import PermissionPolicyMixin, PermissionReader
 
 
-class AuthorsViewSet(ModelViewSet):
+class AuthorsViewSet(PermissionPolicyMixin, ModelViewSet):
     queryset = Author.objects.all()
     serializer_class = AuthorSerializers
     permission_classes_per_method = {
@@ -18,7 +18,7 @@ class AuthorsViewSet(ModelViewSet):
     }
 
 
-class BooksViewSet(ModelViewSet):
+class BooksViewSet(PermissionPolicyMixin, ModelViewSet):
     queryset = Book.objects.all()
     serializer_class = BookSerializers
     permission_classes_per_method = {
@@ -30,7 +30,7 @@ class BooksViewSet(ModelViewSet):
     }
 
 
-class ReadersViewSet(ModelViewSet):
+class ReadersViewSet(PermissionPolicyMixin, ModelViewSet):
     queryset = Readers.objects.all()
     serializer_class = ReadersSerializers
     permission_classes_per_method = {
